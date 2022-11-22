@@ -13,8 +13,8 @@ public class Calculator : MonoBehaviour
 
     public void CalculateResult(Button button)
     {
-        int left = getIntValue(_leftValue);
-        int right = getIntValue(_rightValue);
+        float left = getIntValue(_leftValue);
+        float right = getIntValue(_rightValue);
         switch (button.name)
         {
             case "Plus_Button":
@@ -38,32 +38,32 @@ public class Calculator : MonoBehaviour
         }
     }
 
-    private void Addition(int left, int right)
+    private void Addition(float left, float right)
     {
-        _result.text = (left + right).ToString();
+        _result.text = (left + right).ToString().Replace("." , ",");
     }
 
-    private void Subtraction(int left, int right)
+    private void Subtraction(float left, float right)
     {
-        _result.text = (left - right).ToString();
+        _result.text = (left - right).ToString().Replace(".", ",");
     }
 
-    private void Multiplication(int left, int right)
+    private void Multiplication(float left, float right)
     {
-        _result.text = (left * right).ToString();
+        _result.text = (left * right).ToString().Replace(".", ",");
     }
 
-    private void Division(int left, int right)
+    private void Division(float left, float right)
     {
         if (right == 0) 
         {
             print("Illegal division by 0");
             return;
         }
-        _result.text = (left / right).ToString();
+        _result.text = (left / right).ToString().Replace(".", ",");
     }
 
-    private void Compare(int left, int right)
+    private void Compare(float left, float right)
     {
         string result;
         if (left == right)
@@ -76,13 +76,13 @@ public class Calculator : MonoBehaviour
         _result.text = result;
     }
 
-    private int getIntValue(InputField inputField)
+    private float getIntValue(InputField inputField)
     {
         if(inputField.text != "")
         {
             try 
             {
-                return Convert.ToInt32(inputField.text);
+                return (float) Convert.ToSingle(inputField.text.Replace(",", "."));
             } 
             catch (FormatException e)
             {
@@ -91,7 +91,6 @@ public class Calculator : MonoBehaviour
 
                 return 0;
             }
-            
         }
         else
         {
