@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6226415, g: 0.35537556, b: 0.35537556, a: 0.7176471}
+  m_Color: {r: 0.35686275, g: 0.62352943, b: 0.45807737, a: 0.7176471}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1872,7 +1872,7 @@ MonoBehaviour:
   _pinText_2: {fileID: 2143915568}
   _pinText_3: {fileID: 1666493935}
   _gameOverImage: {fileID: 115184598}
-  _initialTime: 10.5
+  _initialTime: 3.7
 --- !u!4 &1669601072
 Transform:
   m_ObjectHideFlags: 0
