@@ -28,7 +28,7 @@ public class Lockpicking : MonoBehaviour
 
     private void Awake()
     {
-        //text change just to check if it's tracked
+        //text change just to check if it's tracked 2
         UpdatePinsText();
     }
 
