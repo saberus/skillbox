@@ -13,14 +13,16 @@ public class Lockpicking : MonoBehaviour
     [SerializeField] private Text _pinText_1;
     [SerializeField] private Text _pinText_2;
     [SerializeField] private Text _pinText_3;
+    [SerializeField] private int _winNumber = 17;
     [SerializeField] private GameObject _gameOverImage;
     [SerializeField][Range(1, 150)] private float _initialTime = 50f;
 
     int _minPinValue = -10;
     int _maxPinValue = 10;
 
-    private List<int> _pinValues = new List<int>() { 5, 5, 5 };
-    private List<int> _winConditionPinValues = new List<int>() { 6, 4, 5 };
+    private List<int> _initialPinValues = new List<int>() { 5, 5, 5 };
+    private List<int> _pinValues = new List<int>();
+    //private List<int> _winConditionPinValues = new List<int>() { 6, 4, 5 };
     private float _counterTime;
 
     
@@ -32,6 +34,7 @@ public class Lockpicking : MonoBehaviour
 
     private void Awake()
     {
+        _pinValues.AddRange(_initialPinValues);
         _gameOverImage.SetActive(false);
         UpdatePinsText();
     }
@@ -69,17 +72,21 @@ public class Lockpicking : MonoBehaviour
     public void StartNewGame()
     {
         _counterTime = _initialTime;
+        _pinValues = new List<int>();
+        _pinValues.AddRange(_initialPinValues);
+        UpdatePinsText();
         _gameOverImage.SetActive(false);
     }
 
     private bool IsWinCondition()
     {
-        bool validSoFar = true;
-        for (int i = 0; i < _pinValues.Count; i++)
+        int result = 0;
+        foreach (var pin in _pinValues)
         {
-            if (_pinValues[i] != _winConditionPinValues[i]) validSoFar = false;
+            result += pin;
         }
-        return validSoFar;
+
+        return result == _winNumber ? true : false;
     }
 
     private void UpdateTimerValue()
