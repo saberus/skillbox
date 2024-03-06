@@ -1,8 +1,8 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,14 +13,20 @@ public class Lockpicking : MonoBehaviour
     [SerializeField] private Text _pinText_1;
     [SerializeField] private Text _pinText_2;
     [SerializeField] private Text _pinText_3;
+    [SerializeField] private int _winNumber = 17;
+    [SerializeField] private GameObject _gameOverImage;
     [SerializeField][Range(1, 150)] private float _initialTime = 50f;
 
-    private List<int> _pinValues = new List<int>() { 5, 5, 5 };
+    int _minPinValue = -10;
+    int _maxPinValue = 10;
+
+    private List<int> _initialPinValues = new List<int>() { 5, 5, 5 };
+    private List<int> _pinValues = new List<int>();
+    //private List<int> _winConditionPinValues = new List<int>() { 6, 4, 5 };
     private float _counterTime;
-    private float _elapsedTime = 0f;
 
     
-    private static Dictionary<String, List<int>> s_musicDatabase = new Dictionary<String, List<int>>() { 
+    private static Dictionary<String, List<int>> s_instrumentDatabase = new Dictionary<String, List<int>>() { 
         { "Drill_Image", new List<int>(){1,-1,0} },
         { "Hammer_Image",new List<int>(){1,2,-1} },
         { "Picklock_Image", new List<int>(){-1,1,1 } }
@@ -28,7 +34,8 @@ public class Lockpicking : MonoBehaviour
 
     private void Awake()
     {
-        //text change just to check if it's tracked 2
+        _pinValues.AddRange(_initialPinValues);
+        _gameOverImage.SetActive(false);
         UpdatePinsText();
     }
 
@@ -46,10 +53,40 @@ public class Lockpicking : MonoBehaviour
 
     public void ApplyInstrument(Button button)
     {
-        var instrumentData = s_musicDatabase.GetValueOrDefault(button.name);
-        _pinValues = _pinValues.Select((x, i) => x + instrumentData[i]).ToList();
+        var instrumentData = s_instrumentDatabase.GetValueOrDefault(button.name);
+        for(int i = 0; i < _pinValues.Count(); i++)
+        {
+            int newPinValue = _pinValues[i] + instrumentData[i];
+            if (newPinValue <= _maxPinValue && newPinValue >= _minPinValue)
+            {
+                _pinValues[i] = newPinValue;
+            }
+        }
         UpdatePinsText();
+        if (IsWinCondition())
+        {
+            SetEndGameScrenValues("win");
+        }
+    }
 
+    public void StartNewGame()
+    {
+        _counterTime = _initialTime;
+        _pinValues = new List<int>();
+        _pinValues.AddRange(_initialPinValues);
+        UpdatePinsText();
+        _gameOverImage.SetActive(false);
+    }
+
+    private bool IsWinCondition()
+    {
+        int result = 0;
+        foreach (var pin in _pinValues)
+        {
+            result += pin;
+        }
+
+        return result == _winNumber ? true : false;
     }
 
     private void UpdateTimerValue()
@@ -57,6 +94,10 @@ public class Lockpicking : MonoBehaviour
         if (_counterTime >= 0)
         {
             _counterTime -= Time.deltaTime;
+        }
+        else
+        {
+            SetEndGameScrenValues("game_over");  
         }
     }
 
@@ -70,5 +111,18 @@ public class Lockpicking : MonoBehaviour
         _pinText_1.text = _pinValues[0].ToString();
         _pinText_2.text = _pinValues[1].ToString();
         _pinText_3.text = _pinValues[2].ToString();
+    }
+
+    private void SetEndGameScrenValues(string type)
+    {
+        if(type == "win")
+        {
+            _gameOverImage.GetComponent<Image>().color = new Color32(91, 159, 117, 183);
+        }
+        else
+        {
+            _gameOverImage.GetComponent<Image>().color = new Color32(159, 91, 91, 183);
+        }
+        _gameOverImage.SetActive(true);
     }
 }
