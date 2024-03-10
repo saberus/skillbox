@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
     [SerializeField] float _maxTime = 5f;
+    [SerializeField] bool _singleExecution = false;
 
+    public bool Triggered = false;
     public bool Tick = false;
 
     private Image _img = null;
@@ -14,24 +16,30 @@ public class Timer : MonoBehaviour
 
     private void Awake()
     {
-        //find image in childrens
         Transform timer = gameObject.transform.Find("Timer");
         _img = timer.GetComponent<Image>();
     }
 
     void Start()
     {
+        if(!_singleExecution) Triggered = true;
         _currentTime = _maxTime;
     }
 
     void Update()
     {
-        Tick = false;
-        _currentTime -= Time.deltaTime;
-        if (_currentTime <= 0)
+        if (Triggered)
         {
-            Tick = true;
+            Tick = false;
+            _currentTime -= Time.deltaTime;
+            if (_currentTime <= 0)
+            {
+                Tick = true;
+                _currentTime = _maxTime;
+                if (_singleExecution) Triggered = false;
+            }
+            _img.fillAmount = _currentTime / _maxTime;
         }
-        _img.fillAmount = _currentTime / _maxTime;
+
     }
 }
