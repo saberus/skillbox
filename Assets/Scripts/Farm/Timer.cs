@@ -26,8 +26,8 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        _currentTime -= Time.deltaTime;
         Tick = false;
+        _currentTime -= Time.deltaTime;
         if (_currentTime <= 0)
         {
             Tick = true;
