@@ -42,6 +42,11 @@ public class FarmSceneManager : MonoBehaviour
 
     private void Update()
     {
+        if(_resoursesAmount == 0 && _workersAmount == 0)
+        {
+            //game over;
+        }
+
         if (_harvestTimer.Tick)
         {
             _resoursesAmount += _workersAmount * _workerHarvestRate;
@@ -49,17 +54,19 @@ public class FarmSceneManager : MonoBehaviour
 
         if (_consumptionTimer.Tick)
         {
-            _resoursesAmount -= (_workersAmount + (_wariorsAmount * _wariorConsumptionRate));
+            _resoursesAmount = Mathf.Max((_workersAmount + (_wariorsAmount * _wariorConsumptionRate)), 0);
         }
 
         if (_hireWorkerTimer.Tick)
         {
             _workersAmount += 1;
+            _hireWorkerBtn.interactable = true;
         }
 
         if (_hireWariorTimer.Tick)
         {
             _wariorsAmount += 1;
+            _hireWariorBtn.interactable = true;
         }
 
         UpdateStatValues();
