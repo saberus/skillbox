@@ -11,15 +11,29 @@ public class FarmSceneManager : MonoBehaviour
     [SerializeField] Timer _hireWorkerTimer;
     [SerializeField] Timer _hireWariorTimer;
     [SerializeField] Text _statValuesText;
-    [SerializeField] int _workerHarvestRate = 1;
-    [SerializeField] int _workerConsumptionRate = 1;
-    [SerializeField] int _wariorConsumptionRate = 2;
+    [SerializeField] int _workerHarvestRate = 0;
+    [SerializeField] int _workerConsumptionRate = 0;
+    [SerializeField] int _wariorConsumptionRate = 0;
+    [SerializeField] Button _hireWorkerBtn;
+    [SerializeField] Button _hireWariorBtn;
 
 
     private int _resoursesAmount = 5;
     private int _workersAmount = 1;
     private int _wariorsAmount = 0;
 
+
+    public void AddWorker()
+    {
+        _hireWorkerBtn.interactable = false;
+        _hireWorkerTimer.Triggered = true;
+    }
+
+    public void AddWarior()
+    {
+        _hireWariorBtn.interactable = false;
+        _hireWariorTimer.Triggered = true;
+    }
 
     private void Start()
     {
@@ -28,6 +42,11 @@ public class FarmSceneManager : MonoBehaviour
 
     private void Update()
     {
+        if(_resoursesAmount == 0 && _workersAmount == 0)
+        {
+            //game over;
+        }
+
         if (_harvestTimer.Tick)
         {
             _resoursesAmount += _workersAmount * _workerHarvestRate;
@@ -35,7 +54,19 @@ public class FarmSceneManager : MonoBehaviour
 
         if (_consumptionTimer.Tick)
         {
-            _resoursesAmount -= (_workersAmount + (_wariorsAmount * _wariorConsumptionRate));
+            _resoursesAmount = Mathf.Max((_workersAmount + (_wariorsAmount * _wariorConsumptionRate)), 0);
+        }
+
+        if (_hireWorkerTimer.Tick)
+        {
+            _workersAmount += 1;
+            _hireWorkerBtn.interactable = true;
+        }
+
+        if (_hireWariorTimer.Tick)
+        {
+            _wariorsAmount += 1;
+            _hireWariorBtn.interactable = true;
         }
 
         UpdateStatValues();
