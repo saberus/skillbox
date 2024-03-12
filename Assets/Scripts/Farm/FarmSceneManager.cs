@@ -22,6 +22,8 @@ public class FarmSceneManager : MonoBehaviour
     private int _workersAmount = 1;
     private int _wariorsAmount = 0;
 
+    private bool _paused = false;
+
 
     public void AddWorker()
     {
@@ -35,6 +37,19 @@ public class FarmSceneManager : MonoBehaviour
         _hireWariorTimer.Triggered = true;
     }
 
+    public void PauseGame()
+    {
+        if (_paused)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+        _paused = !_paused;
+    }
+
     private void Start()
     {
         UpdateStatValues();
@@ -45,6 +60,10 @@ public class FarmSceneManager : MonoBehaviour
         if(_resoursesAmount == 0 && _workersAmount == 0)
         {
             //game over;
+            Time.timeScale = 0;
+            //Show Game Over Screen
+            //Button main menu
+            // New game
         }
 
         if (_harvestTimer.Tick)
@@ -76,5 +95,7 @@ public class FarmSceneManager : MonoBehaviour
     {
         _statValuesText.text = _resoursesAmount.ToString() + "\n\n" + _workersAmount.ToString() + "\n\n" + _wariorsAmount.ToString();
     }
+
+
 
 }
