@@ -14,6 +14,8 @@ public class Timer : MonoBehaviour
     private Image _img = null;
     private float _currentTime = Mathf.Infinity;
 
+    private AudioSource _audioSource;
+
     public void ResetTimer()
     {
         _currentTime = _maxTime;
@@ -23,6 +25,7 @@ public class Timer : MonoBehaviour
     {
         Transform timer = gameObject.transform.Find("Timer");
         _img = timer.GetComponent<Image>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -41,9 +44,16 @@ public class Timer : MonoBehaviour
             {
                 _currentTime = _maxTime;
                 Tick = true;
+                PlayAssociatedSound();
                 if (_singleExecution) Triggered = false;
             }
             _img.fillAmount = _currentTime / _maxTime;
         }
+    }
+
+    private void PlayAssociatedSound()
+    {
+        if (_audioSource == null) return;
+        _audioSource.Play();
     }
 }
