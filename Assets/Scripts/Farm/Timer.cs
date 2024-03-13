@@ -14,6 +14,11 @@ public class Timer : MonoBehaviour
     private Image _img = null;
     private float _currentTime = Mathf.Infinity;
 
+    public void ResetTimer()
+    {
+        _currentTime = _maxTime;
+    }
+
     private void Awake()
     {
         Transform timer = gameObject.transform.Find("Timer");
@@ -34,12 +39,11 @@ public class Timer : MonoBehaviour
             _currentTime -= Time.deltaTime;
             if (_currentTime <= 0)
             {
-                Tick = true;
                 _currentTime = _maxTime;
+                Tick = true;
                 if (_singleExecution) Triggered = false;
             }
             _img.fillAmount = _currentTime / _maxTime;
         }
-
     }
 }
