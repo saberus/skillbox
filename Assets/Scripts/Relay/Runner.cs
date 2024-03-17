@@ -6,11 +6,21 @@ using UnityEngine;
 public class Runner : MonoBehaviour
 {
     [SerializeField] float _speed = 1f;
+    [SerializeField] GameObject _stickPrefab = null;
+
+    private bool _isMoving = false;
+    private bool _isStickVisible = false;
 
     private Vector3 _destination;
 
+    private void Awake()
+    {
+        _stickPrefab.SetActive(_isStickVisible);
+    }
+
     private void Update()
     {
+        if (!_isMoving) return;
         MoveRunner();
     }
     public void MoveRunner()
@@ -28,6 +38,13 @@ public class Runner : MonoBehaviour
     {
         _destination = destination;
         transform.LookAt(destination);
+    }
+
+    public void ToggleMove()
+    {
+        _isStickVisible = !_isStickVisible;
+        _stickPrefab.SetActive(_isStickVisible);
+        _isMoving = !_isMoving;
     }
 
 }
