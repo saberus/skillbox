@@ -1,22 +1,20 @@
-using Newtonsoft.Json.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Runner : MonoBehaviour
 {
     [SerializeField] float _speed = 1f;
     [SerializeField] GameObject _stickPrefab = null;
+    [SerializeField] GameObject _stickHandle = null;
 
     private bool _isMoving = false;
     private bool _isStickVisible = false;
 
     private Vector3 _destination;
 
-    private void Awake()
-    {
-        _stickPrefab.SetActive(_isStickVisible);
-    }
+    //private void Awake()
+    //{
+    //    _stickPrefab.SetActive(_isStickVisible);
+    //}
 
     private void Update()
     {
@@ -43,8 +41,16 @@ public class Runner : MonoBehaviour
     public void ToggleMove()
     {
         _isStickVisible = !_isStickVisible;
-        _stickPrefab.SetActive(_isStickVisible);
+        //_stickPrefab.SetActive(_isStickVisible);
         _isMoving = !_isMoving;
+    }
+
+    public void SetStick(GameObject stick)
+    {
+        _stickPrefab = stick;
+        _stickPrefab.transform.SetParent(transform);
+        _stickPrefab.transform.position = _stickHandle.transform.position;
+        _stickPrefab.transform.rotation = _stickHandle.transform.rotation;
     }
 
 }

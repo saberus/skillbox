@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
-  _stickPrefab: {fileID: 8103853219459117749}
+  _stickPrefab: {fileID: 0}
+  _stickHandle: {fileID: 8103853219459117749}
 --- !u!1 &4788921423509510867
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,6 +256,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stick
       objectReference: {fileID: 0}
+    - target: {fileID: 636460413014236596, guid: f5a77c290837cad4084e599ac5ae7597, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 636460413014236603, guid: f5a77c290837cad4084e599ac5ae7597, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -297,6 +302,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 636460413014236603, guid: f5a77c290837cad4084e599ac5ae7597, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 636460413326083217, guid: f5a77c290837cad4084e599ac5ae7597, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
