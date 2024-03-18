@@ -4,20 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-//Change just to test the branch
 public class Relay : MonoBehaviour
 {
-    [SerializeField] GameObject _target = null;
-    [SerializeField] GameObject _runner = null;
+    [SerializeField] GameObject _targetGameObject = null;
+    [SerializeField] GameObject _runnerGameObject = null;
     [SerializeField] int _listSize = 0;
-    
+    [SerializeField] float _passDistance = 2f;
+
+    GameObject[] _runners = null;
+    Runner _currentRunner = null;
     Vector3[] _targetPositions;
     int _locationIndex = 0;
+    bool _isForward = false;
 
     private void Awake()
     {
-        _targetPositions = new Vector3[_listSize];
-        PlaceTargets();
+        Initialize();
     }
 
     private void Update()
@@ -28,20 +30,21 @@ public class Relay : MonoBehaviour
 
     private void Run()
     {
-        Vector3 currentTarget = GetNextPosition(_locationIndex);
-        if (_runner.transform.position == currentTarget)
+        Vector3 currentTarget = _currentRunner.GetDestination();
+        if (Vector3.Distance(_currentRunner.transform.position, currentTarget) <= _passDistance)
         {
-            _locationIndex++;
-            currentTarget = GetNextPosition(_locationIndex);
-            _runner.transform.LookAt(currentTarget);
+            _currentRunner.ToggleMove();
+            _locationIndex = GetNextIndex();
+            _currentRunner = _runners[0].GetComponent<Runner>();
+            _currentRunner.SetDestination(GetNextPosition(_locationIndex));
+            _currentRunner.ToggleMove();
+            if (IsSwitchDirection(currentTarget)) _isForward = !_isForward;
         }
-        MoveRunner(currentTarget);
     }
 
-    private void MoveRunner(Vector3 destination)
+    private int GetNextIndex()
     {
-        if(destination == null) return;
-        _runner.transform.position = Vector3.MoveTowards(_runner.transform.position, destination, Time.deltaTime);
+        return _isForward ? _locationIndex + 1 : _locationIndex - 1;
     }
 
     private Vector3 GetNextPosition(int currentIndex)
@@ -56,13 +59,33 @@ public class Relay : MonoBehaviour
         }
     }
 
+    private bool IsSwitchDirection(Vector3 currentTarget)
+    {
+        if(_locationIndex == _targetPositions.Length - 1 || _locationIndex == 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
     private void PlaceTargets()
     {
-        
         for(int i = 0; i < _listSize; i++)
         {
-            _targetPositions[i].Set(5*i,5*i,5*i);
-            Instantiate(_target, _targetPositions[i], Quaternion.identity);
+            _targetPositions[i].Set(10*i,0,10*i); //ignore y
+            Instantiate(_targetGameObject, _targetPositions[i], Quaternion.identity);
+            _runners[i] = Instantiate(_runnerGameObject, _targetPositions[i], Quaternion.identity);
         }
+    }
+
+    private void Initialize()
+    {
+        _targetPositions = new Vector3[_listSize];
+        _runners = new GameObject[_listSize];
+        PlaceTargets();
+        _isForward = true;
+        _currentRunner = _runners[0].GetComponent<Runner>();
+        _currentRunner.SetDestination(GetNextPosition(_locationIndex));
+        _currentRunner.ToggleMove();
     }
 }
