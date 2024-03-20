@@ -50,6 +50,7 @@ MonoBehaviour:
   _speed: 5
   _stickPrefab: {fileID: 0}
   _stickHandle: {fileID: 8103853219459117749}
+  _runnerBody: {fileID: 4788921423509510867}
 --- !u!1 &4788921423509510867
 GameObject:
   m_ObjectHideFlags: 0

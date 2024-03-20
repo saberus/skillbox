@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Relay : MonoBehaviour
@@ -15,7 +16,7 @@ public class Relay : MonoBehaviour
     int _locationIndex = 0;
     bool _isForward = false;
     bool _isRun = false;
-    bool _isRunnerGame = false;
+    bool _isRelayGame = false;
 
     private void Update()
     {
@@ -28,14 +29,14 @@ public class Relay : MonoBehaviour
 
     public void StartRelay()
     {
-        _isRunnerGame = true;
+        _isRelayGame = true;
         Initialize();
         _isRun = true;
     }
 
     public void StartRunner()
     {
-        _isRunnerGame = false;
+        _isRelayGame = false;
         Initialize();
         _isRun = true;
     }
@@ -55,22 +56,23 @@ public class Relay : MonoBehaviour
         Vector3 currentTarget = _currentRunner.GetDestination();
         if (Vector3.Distance(_currentRunner.transform.position, currentTarget) <= _passDistance)
         {
-            print("Here 1");
-            if(_isRunnerGame)
+            
+            if (_isRelayGame)
             {
-                print("Here 2");
                 _currentRunner.ToggleMove(); //Relay
             }
-            
+
+            if (_isRelayGame)
+            {
+                Runner oldRunner = _currentRunner;
+                _currentRunner = GetNextRunner();//Relay
+                StartStickRelay(oldRunner, _currentRunner);
+            }
+
             _locationIndex = GetNextIndex();
 
-            if (_isRunnerGame)
-            {
-                _currentRunner = _runners[_locationIndex].GetComponent<Runner>();//Relay
-            }
-            
-            _currentRunner.SetDestination(GetNextPosition(_locationIndex));
-            if (_isRunnerGame)
+            _currentRunner.SetDestination(_locationIndex, GetNextPosition(_locationIndex));
+            if (_isRelayGame)
             {
                 _currentRunner.ToggleMove();//Ralay
             }
@@ -78,8 +80,29 @@ public class Relay : MonoBehaviour
             if (IsSwitchDirection(currentTarget))
             {
                 _isForward = !_isForward;
-            } 
+            }
         }
+    }
+
+    private void StartStickRelay(Runner oldRunner, Runner _currentRunner)
+    {
+        GameObject stickObj = oldRunner.GetStick();
+        _currentRunner.SetStick(stickObj);
+
+    }
+
+    private Runner GetNextRunner()
+    {
+        if (_locationIndex == 0 || _locationIndex == _listSize - 1)
+        {
+            return _currentRunner;
+        }
+        if(_isForward)
+        {
+            return _runners[_locationIndex].GetComponent<Runner>();
+        }
+
+        return _runners[_locationIndex - 1].GetComponent<Runner>();
     }
 
     private int GetNextIndex()
@@ -114,12 +137,12 @@ public class Relay : MonoBehaviour
         {
             _targetPositions[i].Set(10*i,0,10*i); //ignore y
             _targets[i] = Instantiate(_targetGameObject, _targetPositions[i], Quaternion.identity);
-            if (_isRunnerGame)
+            if (_isRelayGame && !(i == _listSize - 1))
             {
                 _runners[i] = Instantiate(_runnerGameObject, _targetPositions[i], Quaternion.identity);//relay
             }
         }
-        if (!_isRunnerGame)
+        if (!_isRelayGame)
         {
             _runners[0] = Instantiate(_runnerGameObject, _targetPositions[0], Quaternion.identity);
         }
@@ -134,7 +157,8 @@ public class Relay : MonoBehaviour
         _isForward = true;
         _currentRunner = _runners[0].GetComponent<Runner>();
         _currentRunner.SetStick(Instantiate(_stickGameObject, _currentRunner.transform.position, Quaternion.identity));
-        _currentRunner.SetDestination(GetNextPosition(_locationIndex));
+        _locationIndex = GetNextIndex();
+        _currentRunner.SetDestination(_locationIndex, GetNextPosition(_locationIndex));
         _currentRunner.ToggleMove();
     }
 }
