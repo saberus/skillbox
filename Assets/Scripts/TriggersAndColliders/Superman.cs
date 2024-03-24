@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class Superman : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    [SerializeField] float _forceAmount = 0;
+    
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            print("Contact");
+        }
     }
 }
