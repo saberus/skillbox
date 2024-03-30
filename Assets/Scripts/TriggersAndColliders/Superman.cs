@@ -6,7 +6,7 @@ using UnityEngine;
 public class Superman : MonoBehaviour
 {
 
-    [SerializeField] float _forceAmount = 100;
+    [SerializeField] float _forceAmount = 0;
 
     Rigidbody _rb = null;
 
@@ -25,7 +25,7 @@ public class Superman : MonoBehaviour
         Rigidbody rigidbody = collision.gameObject.GetComponent<Rigidbody>();
         if (rigidbody == null) return;
         Vector3 direction = (collision.transform.position - transform.position).normalized;
-        rigidbody.AddForce(new Vector3(0,0,direction.z * _forceAmount), ForceMode.Impulse);
+        rigidbody.AddForce(direction * _forceAmount, ForceMode.Impulse);
     }
 
     private void Move()
