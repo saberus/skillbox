@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Superman : MonoBehaviour
@@ -21,10 +22,10 @@ public class Superman : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            print("Contact");
-        }
+        Rigidbody rigidbody = collision.gameObject.GetComponent<Rigidbody>();
+        if (rigidbody == null) return;
+        Vector3 direction = (collision.transform.position - transform.position).normalized;
+        rigidbody.AddForce(direction * _forceAmount, ForceMode.Impulse);
     }
 
     private void Move()
