@@ -1222,6 +1222,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2916780251228589614, guid: c7d9c51211f86d141a9a9105e23a7504, type: 3}
+      propertyPath: m_Text
+      value: 0 Gravity
+      objectReference: {fileID: 0}
     - target: {fileID: 4989327658412889033, guid: c7d9c51211f86d141a9a9105e23a7504, type: 3}
       propertyPath: m_Text
       value: Superman
@@ -1320,7 +1324,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4989327659986727326, guid: c7d9c51211f86d141a9a9105e23a7504, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8032132538921883798, guid: c7d9c51211f86d141a9a9105e23a7504, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7d9c51211f86d141a9a9105e23a7504, type: 3}
