@@ -6,12 +6,16 @@ public class ZeroG : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<Rigidbody>().useGravity = false;
+        Rigidbody rb = other.GetComponent<Rigidbody>();
+        if (rb == null) return;
+        rb.useGravity = false;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        other.GetComponent<Rigidbody>().useGravity = true;
+        Rigidbody rb = other.GetComponent<Rigidbody>();
+        if (rb == null) return;
+        rb.useGravity = true;
     }
 
 }
