@@ -28,6 +28,11 @@ public class Spring : MonoBehaviour
 
     void Update()
     {
+        DoTension();
+    }
+
+    void DoTension()
+    {
         if (_isTensioning)
         {
             _tensionTime += Time.deltaTime;
@@ -41,7 +46,6 @@ public class Spring : MonoBehaviour
                 Invoke("Release", _releaseDelay);
             }
         }
-
     }
 
     void Release()
