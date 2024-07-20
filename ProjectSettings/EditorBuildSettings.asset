@@ -5,7 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Farm_Scene.unity
     guid: b07b2f3d97e5f074b9306a4b7fc89dd1
+  - enabled: 1
+    path: Assets/Scenes/Wild Ball/Main_Menu.unity
+    guid: ab3cf720f60185344b50f2951e596ae8
+  - enabled: 1
+    path: Assets/Scenes/Wild Ball/Level_1.unity
+    guid: b88e8a9fa5ab5e441af75f56594f942a
+  - enabled: 1
+    path: Assets/Scenes/Wild Ball/Level_2.unity
+    guid: d7224e7c89de73d4fa9fbcbd48e5208f
   m_configObjects: {}
